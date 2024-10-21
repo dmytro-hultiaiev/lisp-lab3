@@ -32,20 +32,20 @@
 
 ## Лістинг функції з використанням конструктивного підходу
 ```lisp
-(defun swap (lst flag)
+(defun swap (lst)
   (cond
     ((or (null lst) (null (rest lst)))
-     (values lst flag))
+     (values lst nil))
 
     ((> (first lst) (second lst))
-     (multiple-value-bind (rest-of-list new-flag) (swap (cons (first lst) (rest (rest lst))) t)
-       (values (cons (second lst) rest-of-list) new-flag)))
+     (multiple-value-bind (rest-of-list new-flag) (swap (cons (first lst) (rest (rest lst))))
+       (values (cons (second lst) rest-of-list) t)))
 
-    (t (multiple-value-bind (rest-of-list new-flag) (swap (rest lst) flag)
+    (t (multiple-value-bind (rest-of-list new-flag) (swap (rest lst))
          (values (cons (first lst) rest-of-list) new-flag)))))
 
 (defun sort-func (lst)
-    (multiple-value-bind (new-list flag) (swap lst nil)
+    (multiple-value-bind (new-list flag) (swap lst)
       (if flag
           (sort-func new-list)
           new-list)))
